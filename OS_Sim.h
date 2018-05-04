@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 #include "Process.h"
 #include "ReadyQueue.h"
@@ -40,15 +41,15 @@ class OS_Sim {
 public:
     OS_Sim(unsigned int r, unsigned int s, unsigned int d): memory_(RAM(r,s))
     {
-        time_ = 0;
+        time_ = 1;
         RAM_ = r;
         pfsize_ = s;
         num_disks_ = d;
         
-        pid_counter_ = 1; // PIDs start at 0
+        PID_counter_ = 1; // PIDs start at 0
     }
     
-    unsigned int getNewPID() { return pid_counter_++; }
+    unsigned int getNewPID() { return PID_counter_++; }
     unsigned int getTime() { return time_; }
     
     unsigned int get_RAM() { return RAM_; }
@@ -68,7 +69,7 @@ private:
     unsigned int pfsize_; //page and frame size
     unsigned int num_disks_;
     
-    unsigned int pid_counter_;
+    unsigned int PID_counter_;
     CPU CPU_;
     ReadyQueue queue_;
     RAM memory_; 

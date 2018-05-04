@@ -9,6 +9,11 @@ LRUCache::LRUCache(int n)
 }
 
 
+int LRUCache::peek() {
+    return dq.back(); 
+}
+
+
 /* Refers key x with in the LRU cache */
 void LRUCache::refer(int x)
 {

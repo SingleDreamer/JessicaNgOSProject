@@ -22,7 +22,9 @@ You should write a program that simulates some aspects of operating systems. The
 Scheduling: your program should use multilevel feedback queue scheduling. Top level 0 queue uses RR scheduling with a single time quantum. Level 1 queue uses RR scheduling with a double time quantum.  Lowest level 2 queue uses FCFS approach. Each process starts at the level 0 queue. Each time the process exceeds its time limit (in other words, each time the process is preempted by the q command) it goes one level lower. We do not implement any mechanics to move processes up the levels.
 The process arriving to a higher-level queue preempts running process from the lower-level queue. The process preempted by the higher-level process returns to the head of its queue. The process from the lower-level queue can run only if all higher queues are empty.
 
-!!! does time passed count toward quantum?
+!!! does time passed outside of queue get reset if added back to queue / count toward quantum?
+add time on invalid?
+
 
 All I/O-queues are FCFS.
 
@@ -32,8 +34,14 @@ Memory: your program should simulate demand paging memory management. When a new
 At the start, your program asks the user three questions:
 
 How much RAM memory is there on the simulated computer? Your program receives the number in bytes (no kilobytes or words). I can enter any number up to 4000000000 (4 billions).
-What is the size of a page/frame. The enumeration of pages starts from 0.How many hard disks does the simulated computer have? The enumeration of the hard disks starts with 0.
+
+What is the size of a page/frame. The enumeration of pages starts from 0.
+
+How many hard disks does the simulated computer have? The enumeration of the hard disks starts with 0.
+
 After these questions are answered, the simulation begins. You program constantly listens for the user inputs. You should NOT ask for a confirmation to enter another input. The user inputs signal some system events. Your program simulates the corresponding system behavior.
+
+
 The possible inputs are:
 
 A       ‘A’ input means that a new process has been created.

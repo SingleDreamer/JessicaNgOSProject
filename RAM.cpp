@@ -17,4 +17,29 @@ void RAM::print() {
 
 }
 
+
+unsigned int RAM::request(unsigned int PID, unsigned int address, unsigned int timestamp) {
+    cout << "request" << endl;
+    //cache.display();
+    unsigned int page_number = address / pfsize_;
+    int lru = cache.peek();
+    cout << lru;
+    Frame&& f = move(frames_[lru]);
+    f.page_number_ = page_number;
+    f.PID_ = PID;
+    f.timestamp_ = timestamp;
+    cache.refer(lru);
+    return lru; 
+    
+}
+
+void RAM::remove(unsigned int PID) {
+    for (unsigned int i = 0; i < num_frames_; i++) {
+        if (frames_[i].PID_ == PID) {
+            frames_[i].clear(); 
+        }
+    }
+}
+
+
 #endif //RAM_CPP
