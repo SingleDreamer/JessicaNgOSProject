@@ -67,8 +67,8 @@ private:
     unsigned int num_disks_;
     
     unsigned int pid_counter_;
-    CPU CPU;
-    ReadyQueue queue;
+    CPU CPU_;
+    ReadyQueue queue_;
     // multilevel queue
     /*list<Process*> level0_; // RR with time quantum 1
      list<Process*> level1_; // RR with time quantum 2

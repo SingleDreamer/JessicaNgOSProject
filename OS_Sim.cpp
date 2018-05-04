@@ -60,9 +60,9 @@ void OS_Sim::run() {
             // r
             if(input == 'r') {
                 cout << endl << "CPU: ";
-                if (CPU.empty()) cout << "<empty>" << endl << endl;
-                else cout << CPU.getProcess()->getPID() << endl;
-                queue.print(); 
+                if (CPU_.empty()) cout << "<empty>" << endl << endl;
+                else cout << CPU_.getProcess()->getPID() << endl;
+                queue_.print(); 
             }
             // i
             else if (input == 'i') {
@@ -94,57 +94,57 @@ void OS_Sim::run() {
 void OS_Sim::createProcess() {
     Process* p = new Process(getNewPID());
     p->setTimestamp(getTime());
-    if (CPU.empty()) {
-        CPU.execute(p);
+    if (CPU_.empty()) {
+        CPU_.execute(p);
     } else {
-        queue.insert(p);
-        if (CPU.getProcess()->getPriority() > 0) {
-            queue.preempt(CPU.stop());
-            CPU.execute(queue.pop());
+        queue_.insert(p);
+        if (CPU_.getProcess()->getPriority() > 0) {
+            queue_.preempt(CPU_.stop());
+            CPU_.execute(queue_.pop());
         }
     }
     
     /*
-     cout << CPU.empty() << endl;
-     Process* p = CPU.terminate();
+     cout << CPU_.empty() << endl;
+     Process* p = CPU_.terminate();
      if (p != NULL) cout << p->getPID() << endl; 
      delete p;
      p = new Process(getNewPID());
      cout << p->getPID() << endl; 
-     cout << CPU.execute(p) << endl;
+     cout << CPU_.execute(p) << endl;
      */
 }
 
 void OS_Sim::passQuantum() {
     cout << addTime() << endl;
-    if (CPU.empty()) return;
-    Process* p = CPU.getProcess();
+    if (CPU_.empty()) return;
+    Process* p = CPU_.getProcess();
     if (p->getPriority() == 0) {
         cout << "insert queue 1" << endl;
-        CPU.stop();
+        CPU_.stop();
         p->reducePriority();
         //p->setTimestamp(getTime());
-        queue.insert(p);
-        Process* n = queue.pop();
+        queue_.insert(p);
+        Process* n = queue_.pop();
         n->setTimestamp(getTime());
-        CPU.execute(n);
+        CPU_.execute(n);
     } else if (p->getPriority() == 1 && p->getTimestamp()+1 != getTime()) {
         cout << "insert queue 2" << endl;
-        CPU.stop();
+        CPU_.stop();
         p->reducePriority();
         //p->setTimestamp(getTime());
-        queue.insert(p);
-        Process* n = queue.pop();
+        queue_.insert(p);
+        Process* n = queue_.pop();
         n->setTimestamp(getTime());
-        CPU.execute(n);
+        CPU_.execute(n);
     }
     return; 
 }
 
 void OS_Sim::terminate() {
-    CPU.stop();
-    if (queue.empty()) return;
-    CPU.execute(queue.pop());
+    CPU_.stop();
+    if (queue_.empty()) return;
+    CPU_.execute(queue_.pop());
 }
 
 
