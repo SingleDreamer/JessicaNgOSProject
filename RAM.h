@@ -61,6 +61,12 @@ public:
     unsigned int request(unsigned int PID, unsigned int address, unsigned int timestamp);
     bool access(unsigned int frame, unsigned int PID, unsigned int page_number) {
         cout << "accessed" << endl;
+        if (frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number) {
+            cout << "memory exists" << endl;
+        }
+        else {
+            cout << "memory was overwritten, retrieving again." << endl ;
+        }
         return frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number; }
     void remove(unsigned int PID); 
     

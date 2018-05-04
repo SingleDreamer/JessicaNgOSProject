@@ -12,12 +12,15 @@ void OS_Sim::run() {
     string input;
     
     while (true) {
-        //getline(cin, input);
         cout << endl;
+        if (!CPU_.empty()) {
+            cout << endl << "current process: " << endl;
+            CPU_.getProcess()->display();
+            cout << endl;
+        }
         cout << "> ";
         cin >> input;
         
-        //cout << input << endl;
         if (input == "A") {
             // make new process
             createProcess();
@@ -32,6 +35,7 @@ void OS_Sim::run() {
             // terminate current process
             terminate();
         }
+        // !!!check if d operations are safe!!!
         else if (input == "d") {
             // read number
             int number;
@@ -42,6 +46,16 @@ void OS_Sim::run() {
             cin >> filename;
             cin.clear();
             // read from disk
+            if (number < num_disks_ && !CPU_.empty()) {
+                //cout << CPU_.getProcess()->getPID() << endl;
+                disks_[number].request(CPU_.getProcess(), filename);
+                CPU_.stop();
+                if (!queue_.empty()) {
+                    Process* next = queue_.pop();
+                    next->setTimestamp(getTime());//
+                    CPU_.execute(next);
+                }
+            }
         }
         else if (input == "D") {
             // read in nnumber
@@ -49,9 +63,24 @@ void OS_Sim::run() {
             cin >> number;
             cin.clear();
             // finish reading from disk
+            if (number < num_disks_) {
+                Process* p = disks_[number].finish();
+                if (p != NULL) {
+                    if (CPU_.empty()) {
+                        CPU_.execute(p);
+                    } else {
+                        // behavior here??????
+                        queue_.insert(p);
+                        queue_.preempt(CPU_.stop());
+                        CPU_.execute(queue_.pop());
+                    }
+                }
+
+            }
         }
         else if (input == "m") {
             // memory operation
+            // put in one function
             int address;
             cin >> address;
             if (!CPU_.empty()) {
@@ -77,7 +106,9 @@ void OS_Sim::run() {
             }
             // i
             else if (input == 'i') {
-                
+                for (auto it = disks_.begin(); it != disks_.end(); it++) {
+                    (*it).display(); 
+                }
             }
             // m
             else if (input == 'm') {
@@ -138,7 +169,7 @@ void OS_Sim::passQuantum() {
     Process* p = CPU_.getProcess();
     p->passQuantum();
     if (p->getPriority() == 0) {
-        cout << "insert queue 1" << endl;
+        cout << p->getPID() << " insert queue level 1" << endl;
         CPU_.stop();
         p->reducePriority();
         //p->setTimestamp(getTime());
@@ -148,7 +179,7 @@ void OS_Sim::passQuantum() {
         CPU_.execute(n);
     } //else if (p->getPriority() == 1 && p->getTimestamp()+1 != getTime()) {
     else if (p->getPriority() == 1 && p->getQuantumPassed() == 3) {
-        cout << "insert queue 2" << endl;
+        cout  << p->getPID() << " insert queue level 2" << endl;
         CPU_.stop();
         p->reducePriority();
         //p->setTimestamp(getTime());

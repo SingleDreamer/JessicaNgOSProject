@@ -30,7 +30,7 @@ public:
     }
     void setTimestamp( int t ) { timestamp_ = t; }
     void setAddress(unsigned int page, unsigned int frame) {
-        std::cout << "set address" << std::endl;
+        std::cout << "set page" << page << " at frame " << frame << std::endl;
         page_table_[page] = frame;
     }
     void passQuantum() { quantum_passed_++; }
@@ -47,6 +47,8 @@ public:
         if (priority_ < 2) priority_++;
         return priority_;
     }
+    
+    void display() { std::cout << "PID: " << getPID() << std::endl << "priority: " << getPriority() << std::endl << "quantum passed: " << getQuantumPassed() << std::endl; }
     
 private:
     

@@ -36,6 +36,54 @@ struct CPU {
     bool empty() { return process_ == NULL; }
 };
 
+struct Disk {
+    Disk(): number_(-1), process_(NULL), filename_("") {}
+    Disk(int n): number_(n), process_(NULL), filename_("") {}
+    ~Disk() { if (process_ != NULL) delete process_; }
+    
+    int number_;
+    Process* process_;
+    string filename_; // have in process??
+    list<pair<Process*, string>> IOQueue;
+    
+    void request (Process* p, string filename) {
+        cout << p->getPID() << " added to IO queue of disk " << number_ << endl;
+        //cout << p->getPID() << endl;
+        IOQueue.push_front(make_pair(p, filename));
+        if (process_ == NULL) pop(); 
+        //pop();
+    }
+    
+    void pop() {
+        pair<Process*, string> next = IOQueue.back();
+        IOQueue.pop_back();
+        process_ = next.first;
+        filename_ = next.second;
+    }
+    
+    Process* finish() {
+        Process* p = process_;
+        process_ = NULL;
+        filename_ = "";
+        if (!IOQueue.empty()) {
+            pop();
+        }
+        return p;
+    }
+    
+    void display() {
+        cout << "Disk " << number_ << endl;
+        if (process_ != NULL) cout << process_->getPID() << " " << filename_ << endl;
+        cout << "I/O queue" << endl;
+        for (auto it = IOQueue.begin(); it != IOQueue.end(); it++) {
+            cout << "\t^" << endl; 
+            cout << it->first->getPID() << " " << it->second << endl;
+        }
+        cout << endl;
+    }
+    
+};
+
 class OS_Sim {
     
 public:
@@ -47,6 +95,11 @@ public:
         num_disks_ = d;
         
         PID_counter_ = 1; // PIDs start at 0
+        
+        disks_.resize(d);
+        for (int i = 0; i < d; i++) {
+            disks_[i] = Disk(i);
+        }
     }
     
     unsigned int getNewPID() { return PID_counter_++; }
@@ -72,7 +125,9 @@ private:
     unsigned int PID_counter_;
     CPU CPU_;
     ReadyQueue queue_;
-    RAM memory_; 
+    RAM memory_;
+    
+    vector<Disk> disks_;
     // multilevel queue
     /*list<Process*> level0_; // RR with time quantum 1
      list<Process*> level1_; // RR with time quantum 2

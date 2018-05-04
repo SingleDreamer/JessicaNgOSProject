@@ -19,11 +19,11 @@ void RAM::print() {
 
 
 unsigned int RAM::request(unsigned int PID, unsigned int address, unsigned int timestamp) {
-    cout << "request" << endl;
+    cout << "request address :";
     //cache.display();
     unsigned int page_number = address / pfsize_;
     int lru = cache.peek();
-    cout << lru;
+    cout << lru << endl;
     Frame&& f = move(frames_[lru]);
     f.page_number_ = page_number;
     f.PID_ = PID;
