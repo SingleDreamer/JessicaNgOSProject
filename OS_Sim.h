@@ -11,6 +11,7 @@
 
 #include "Process.h"
 #include "ReadyQueue.h"
+#include "RAM.h"
 
 using namespace std;
 
@@ -37,7 +38,8 @@ struct CPU {
 class OS_Sim {
     
 public:
-    OS_Sim(unsigned int r, unsigned int s, unsigned int d) {
+    OS_Sim(unsigned int r, unsigned int s, unsigned int d): memory_(RAM(r,s))
+    {
         time_ = 0;
         RAM_ = r;
         pfsize_ = s;
@@ -69,6 +71,7 @@ private:
     unsigned int pid_counter_;
     CPU CPU_;
     ReadyQueue queue_;
+    RAM memory_; 
     // multilevel queue
     /*list<Process*> level0_; // RR with time quantum 1
      list<Process*> level1_; // RR with time quantum 2

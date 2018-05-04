@@ -17,7 +17,7 @@ void OS_Sim::run() {
         cout << "> ";
         cin >> input;
         
-        cout << input << endl;
+        //cout << input << endl;
         if (input == "A") {
             // make new process
             createProcess();
@@ -70,7 +70,7 @@ void OS_Sim::run() {
             }
             // m
             else if (input == 'm') {
-                
+                memory_.print();
             }
             else {
                 cout << "Invalid Input" << endl;

@@ -3,7 +3,7 @@ LFLAGS = -std=c++11
 CFLAGS = -c -Wall
 
 # Edit the following SOURCES variable to include all of the .cpp files to compile
-SOURCES = main.cpp OS_Sim.cpp ReadyQueue.cpp RAM.cpp 
+SOURCES = main.cpp OS_Sim.cpp ReadyQueue.cpp RAM.cpp LRUCache.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 EXECUTABLE_NAME = OS_Sim
 
