@@ -26,6 +26,10 @@ The process arriving to a higher-level queue preempts running process from the l
 add time on invalid?
 behacior after reading disk?
 
+timestamp only with m commands
+!!! update timestamp when access
+access counts as used?
+
 returns to end of original queue without degradong 
 
 All I/O-queues are FCFS.

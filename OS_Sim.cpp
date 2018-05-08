@@ -87,10 +87,10 @@ void OS_Sim::run() {
                 int page_number = address/get_pfsize();
                 Process* p = CPU_.getProcess();
                 if (!p->AddressExists(page_number) ||
-                    (!memory_.access(p->getFrame(page_number), p->getPID(), page_number))) {
+                    (!memory_.access(p->getFrame(page_number), p->getPID(), page_number, getTime()))) {
                     int f = memory_.request(p->getPID(), address, getTime());
                     p->setAddress(page_number, f);
-                } 
+                } // update timestamp
             }
         }
         else if (input == "S") {

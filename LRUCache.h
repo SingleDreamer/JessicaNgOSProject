@@ -18,6 +18,8 @@ using namespace std;
 
 class LRUCache
 {
+    
+private:
     // store keys of cache
     list<int> dq;
     
@@ -25,11 +27,19 @@ class LRUCache
     unordered_map<int, list<int>::iterator> ma;
     int csize; //maximum capacity of cache
     
+    
+    
 public:
+
+    LRUCache(): csize(1) {}
+
     LRUCache(int);
     void refer(int);
-    void display();
-    int peek(); 
+    //void display();
+    int peek();
+    int pop();
+    
+    //void setMaxSize( int size );
 };
 
 

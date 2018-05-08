@@ -41,13 +41,15 @@ struct Frame {
 class RAM {
     
 public:
-    RAM(unsigned int r, unsigned int s): cache(LRUCache(r/s))
+    RAM(unsigned int r, unsigned int s)//: cache(LRUCache(r/s))
     {
         RAMsize_ = r;
         pfsize_ = s;
         num_frames_ = RAMsize_ / pfsize_;
         
         frames_.resize(num_frames_);
+        
+        cache = LRUCache(num_frames_);
         for (unsigned int i = 0; i < num_frames_; i++) {
             frames_[i].frame_number_ = i;
             cache.refer(i);
@@ -59,13 +61,16 @@ public:
     
     
     unsigned int request(unsigned int PID, unsigned int address, unsigned int timestamp);
-    bool access(unsigned int frame, unsigned int PID, unsigned int page_number) {
+    bool access(unsigned int frame, unsigned int PID, unsigned int page_number, unsigned int timestamp) {
         cout << "accessed" << endl;
         if (frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number) {
-            cout << "memory exists" << endl;
+            Frame&& f = move(frames_[frame]);
+            f.timestamp_ = timestamp;
+            cache.refer(frame);
+            cout << "memory exists, timestamp was overwritten" << endl;
         }
         else {
-            cout << "memory was overwritten, retrieving again." << endl ;
+            cout << "memory was overwritten, need to retrieve again." << endl ;
         }
         return frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number; }
     void remove(unsigned int PID); 

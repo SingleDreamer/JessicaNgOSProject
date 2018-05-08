@@ -39,30 +39,20 @@ void LRUCache::refer(int x)
     ma[x] = dq.begin();
 }
 
+int LRUCache::pop() {
+    int n = peek();
+    refer(n);
+    return n; 
+}
+
 // display contents of cache
-void LRUCache::display()
+/*void LRUCache::display()
 {
-    for (auto it = dq.begin(); it != dq.end();
-         it++)
+    for (auto it = dq.begin(); it != dq.end(); it++)
         cout << (*it) << " ";
     
     cout << endl;
-}
-
-//int main()
-//{
-//    LRUCache ca(4);
-//
-//    ca.refer(1);
-//    ca.refer(2);
-//    ca.refer(3);
-//    ca.refer(1);
-//    ca.refer(4);
-//    ca.refer(5);
-//    ca.display();
-//
-//    return 0;
-//}
+}*/
 
 
 // This code is contributed by Satish Srinivas

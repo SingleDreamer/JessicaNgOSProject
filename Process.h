@@ -30,7 +30,7 @@ public:
     }
     void setTimestamp( int t ) { timestamp_ = t; }
     void setAddress(unsigned int page, unsigned int frame) {
-        std::cout << "set page" << page << " at frame " << frame << std::endl;
+        std::cout << "set page " << page << " at frame " << frame << std::endl;
         page_table_[page] = frame;
     }
     void passQuantum() { quantum_passed_++; }
