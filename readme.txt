@@ -25,6 +25,7 @@ The process arriving to a higher-level queue preempts running process from the l
 !!! does time passed outside of queue get reset if added back to queue / count toward quantum?
 add time on invalid?
 behacior after reading disk?
+!!! quantum counter is reset to 0 after returning from disk!!!!!
 
 timestamp only with m commands
 !!! update timestamp when access

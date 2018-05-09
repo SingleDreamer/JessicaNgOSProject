@@ -70,6 +70,7 @@ void OS_Sim::run() {
                         CPU_.execute(p);
                     } else {
                         // behavior here??????
+                        p->resetQuantum(); 
                         queue_.insert(p);
                         queue_.preempt(CPU_.stop());
                         CPU_.execute(queue_.pop());
@@ -101,6 +102,7 @@ void OS_Sim::run() {
             if(input == 'r') {
                 cout << endl << "CPU: ";
                 if (CPU_.empty()) cout << "<empty>" << endl << endl;
+                cout << endl; 
                 else cout << CPU_.getProcess()->getPID() << endl;
                 queue_.print(); 
             }
@@ -178,7 +180,7 @@ void OS_Sim::passQuantum() {
         n->setTimestamp(getTime());//
         CPU_.execute(n);
     } //else if (p->getPriority() == 1 && p->getTimestamp()+1 != getTime()) {
-    else if (p->getPriority() == 1 && p->getQuantumPassed() == 3) {
+    else if (p->getPriority() == 1 && p->getQuantumPassed() == 2) { // changed here!!!
         cout  << p->getPID() << " insert queue level 2" << endl;
         CPU_.stop();
         p->reducePriority();
