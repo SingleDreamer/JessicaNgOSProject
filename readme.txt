@@ -26,10 +26,11 @@ The process arriving to a higher-level queue preempts running process from the l
 add time on invalid?
 behacior after reading disk?
 !!! quantum counter is reset to 0 after returning from disk!!!!!
-
+!!! make sure know when command fail or suceed!!!!
 timestamp only with m commands
 !!! update timestamp when access
 access counts as used?
+!!!regex
 
 returns to end of original queue without degradong 
 

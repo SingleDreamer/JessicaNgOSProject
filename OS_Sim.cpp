@@ -65,12 +65,12 @@ void OS_Sim::run() {
             // finish reading from disk
             if (number < num_disks_) {
                 Process* p = disks_[number].finish();
+                p->resetQuantum();
                 if (p != NULL) {
                     if (CPU_.empty()) {
                         CPU_.execute(p);
                     } else {
                         // behavior here??????
-                        p->resetQuantum();
                         queue_.insert(p);
                         queue_.preempt(CPU_.stop());
                         CPU_.execute(queue_.pop());
