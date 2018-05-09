@@ -43,7 +43,7 @@ public:
     unsigned int getPriority() { return priority_; }
     
     unsigned int getQuantumPassed() { return quantum_passed_; }
-    unsigned int resetQuantum() { quantum_passed_ = 0; }
+    void resetQuantum() { quantum_passed_ = 0; }
     unsigned int reducePriority() {
         if (priority_ < 2) priority_++;
         return priority_;
