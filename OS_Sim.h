@@ -47,8 +47,7 @@ struct Disk {
     list<pair<Process*, string>> IOQueue;
     
     void request (Process* p, string filename) {
-        cout << p->getPID() << " added to IO queue of disk " << number_ << endl;
-        //cout << p->getPID() << endl;
+        // cout << p->getPID() << " added to IO queue of disk " << number_ << endl;
         IOQueue.push_front(make_pair(p, filename));
         if (process_ == NULL) pop(); 
         //pop();
@@ -72,14 +71,18 @@ struct Disk {
     }
     
     void display() {
+        cout << "*********" << endl;
+        cout << "*********" << endl;
         cout << "Disk " << number_ << endl;
         if (process_ != NULL) cout << process_->getPID() << " " << filename_ << endl;
-        cout << "I/O queue" << endl;
+        cout << "*********" << endl << "I/O queue" << endl;
         for (auto it = IOQueue.begin(); it != IOQueue.end(); it++) {
             cout << "\t^" << endl; 
             cout << it->first->getPID() << " " << it->second << endl;
         }
-        cout << endl;
+        cout << "*********" << endl;
+        cout << "*********" << endl;
+        cout << endl << endl;
     }
     
 };

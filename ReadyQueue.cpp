@@ -37,15 +37,15 @@ void ReadyQueue::preempt(Process* p) {
     switch(priority) {
         case 0:
             level0_.push_back(p);
-            cout << p->getPID() << " preempts level 0" << endl;
+            // cout << p->getPID() << " preempts level 0" << endl;
             break;
         case 1:
             level1_.push_back(p);
-            cout << p->getPID() << " preempts level 1" << endl;
+            // cout << p->getPID() << " preempts level 1" << endl;
             break;
         case 2:
             level2_.push_back(p);
-            cout << p->getPID() << " preempts level 2" << endl;
+            // cout << p->getPID() << " preempts level 2" << endl;
             break;
     }
 }

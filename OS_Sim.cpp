@@ -13,11 +13,13 @@ void OS_Sim::run() {
     
     while (true) {
         cout << endl;
-        if (!CPU_.empty()) {
+        
+        /*if (!CPU_.empty()) {
             cout << endl << "current process: " << endl;
             CPU_.getProcess()->display();
             cout << endl;
-        }
+        }*/
+        
         cout << "> ";
         cin >> input;
         
@@ -65,8 +67,8 @@ void OS_Sim::run() {
             // finish reading from disk
             if (number < num_disks_) {
                 Process* p = disks_[number].finish();
-                p->resetQuantum();
                 if (p != NULL) {
+                    p->resetQuantum();
                     if (CPU_.empty()) {
                         CPU_.execute(p);
                     } else {
@@ -100,10 +102,15 @@ void OS_Sim::run() {
             cin.clear();
             // r
             if(input == 'r') {
-                cout << endl << "CPU: ";
+                cout << endl << "**************" << endl << "CPU: ";
                 if (CPU_.empty()) cout << "<empty>" << endl << endl;
                 //cout << endl;
-                else cout << CPU_.getProcess()->getPID() << endl;
+                else {
+                    //cout << CPU_.getProcess()->getPID() << endl;
+                    cout << endl;
+                    CPU_.getProcess()->display();
+                }
+                cout << endl << "**************" << endl;
                 queue_.print(); 
             }
             // i
@@ -171,9 +178,10 @@ void OS_Sim::passQuantum() {
     Process* p = CPU_.getProcess();
     p->passQuantum();
     if (p->getPriority() == 0) {
-        cout << p->getPID() << " insert queue level 1" << endl;
+        // cout << p->getPID() << " insert queue level 1" << endl;
         CPU_.stop();
         p->reducePriority();
+        p->resetQuantum();
         //p->setTimestamp(getTime());
         queue_.insert(p);
         Process* n = queue_.pop();
@@ -181,9 +189,10 @@ void OS_Sim::passQuantum() {
         CPU_.execute(n);
     } //else if (p->getPriority() == 1 && p->getTimestamp()+1 != getTime()) {
     else if (p->getPriority() == 1 && p->getQuantumPassed() == 2) {
-        cout  << p->getPID() << " insert queue level 2" << endl;
+        // cout  << p->getPID() << " insert queue level 2" << endl;
         CPU_.stop();
         p->reducePriority();
+        p->resetQuantum();
         //p->setTimestamp(getTime());
         queue_.insert(p);
         Process* n = queue_.pop();

@@ -47,7 +47,12 @@ What is the size of a page/frame. The enumeration of pages starts from 0.
 
 How many hard disks does the simulated computer have? The enumeration of the hard disks starts with 0.
 
-After these questions are answered, the simulation begins. You program constantly listens for the user inputs. You should NOT ask for a confirmation to enter another input. The user inputs signal some system events. Your program simulates the corresponding system behavior.
+After these questions are answered, the simulation begins. You program constantly listens for the user inputs. 
+
+!!!!You should NOT ask for a confirmation to enter another input. !!!! what does this mean?????
+
+
+The user inputs signal some system events. Your program simulates the corresponding system behavior.
 
 
 The possible inputs are:

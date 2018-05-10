@@ -30,10 +30,11 @@ struct Frame {
         timestamp_ = -1;
     }
     friend ostream& operator<<(ostream& os, const Frame& f) {
-        os << f.frame_number_ << "\t";
-        os << f.page_number_ << "\t";
-        os << f.PID_ << "\t";
-        os << f.timestamp_ << endl;
+        if (f.frame_number_ != -1) os << f.frame_number_ << "\t";
+        if (f.page_number_ != -1) os << f.page_number_ << "\t";
+        if (f.PID_ != -1) os << f.PID_ << "\t";
+        if (f.timestamp_ != -1) os << f.timestamp_;
+        cout << endl; 
         return os;
     }
 };
@@ -41,38 +42,10 @@ struct Frame {
 class RAM {
     
 public:
-    RAM(unsigned int r, unsigned int s)//: cache(LRUCache(r/s))
-    {
-        RAMsize_ = r;
-        pfsize_ = s;
-        num_frames_ = RAMsize_ / pfsize_;
-        
-        frames_.resize(num_frames_);
-        
-        cache = LRUCache(num_frames_);
-        for (unsigned int i = 0; i < num_frames_; i++) {
-            frames_[i].frame_number_ = i;
-            cache.refer(i);
-        }
-        
-
-    };
-    
-    
+    RAM(unsigned int r, unsigned int s);
     
     unsigned int request(unsigned int PID, unsigned int address, unsigned int timestamp);
-    bool access(unsigned int frame, unsigned int PID, unsigned int page_number, unsigned int timestamp) {
-        cout << "accessed" << endl;
-        if (frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number) {
-            Frame&& f = move(frames_[frame]);
-            f.timestamp_ = timestamp;
-            cache.refer(frame);
-            cout << "memory exists, timestamp was overwritten" << endl;
-        }
-        else {
-            cout << "memory was overwritten, need to retrieve again." << endl ;
-        }
-        return frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number; }
+    bool access(unsigned int frame, unsigned int PID, unsigned int page_number, unsigned int timestamp);
     void remove(unsigned int PID); 
     
     void print(); 
