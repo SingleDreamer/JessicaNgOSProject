@@ -42,7 +42,7 @@ unsigned int RAM::request(unsigned int PID, unsigned int address, unsigned int t
     //cache.display();
     unsigned int page_number = address / pfsize_;
     int lru = cache.peek();
-    cout << lru << endl;
+    // cout << lru << endl;
     Frame&& f = move(frames_[lru]);
     f.page_number_ = page_number;
     f.PID_ = PID;
