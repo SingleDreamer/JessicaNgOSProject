@@ -39,7 +39,7 @@ void RAM::print() {
 }
 
 
-unsigned int RAM::request(unsigned int PID, unsigned int address, unsigned int timestamp) {
+unsigned int RAM::request(/*unsigned*/ int PID, /*unsigned*/ int address, /*unsigned*/ int timestamp) {
     // cout << "request address :";
     //cache.display();
     unsigned int page_number = address / pfsize_;
@@ -55,7 +55,7 @@ unsigned int RAM::request(unsigned int PID, unsigned int address, unsigned int t
     
 }
 
-bool RAM::access(unsigned int frame, unsigned int PID, unsigned int page_number, unsigned int timestamp) {
+bool RAM::access(/*unsigned*/ int frame, /*unsigned*/ int PID, /*unsigned*/ int page_number, /*unsigned*/ int timestamp) {
     // cout << "accessed" << endl;
     if (frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number) {
         Frame&& f = move(frames_[frame]);

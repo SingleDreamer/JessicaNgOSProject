@@ -48,9 +48,9 @@ class RAM {
 public:
     RAM(unsigned int r, unsigned int s);
     
-    unsigned int request(unsigned int PID, unsigned int address, unsigned int timestamp);
-    bool access(unsigned int frame, unsigned int PID, unsigned int page_number, unsigned int timestamp);
-    void remove(unsigned int PID); 
+    unsigned int request(/*unsigned*/ int PID, /*unsigned*/ int address, /*unsigned*/ int timestamp);
+    bool access(/*unsigned*/ int frame, /*unsigned*/ int PID, /*unsigned*/ int page_number, /*unsigned*/ int timestamp);
+    void remove(/*unsigned*/ int PID);
     
     void print(); 
     
