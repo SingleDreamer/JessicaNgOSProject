@@ -8,6 +8,22 @@
 
 #include "OS_Sim.h"
 
+OS_Sim::OS_Sim(unsigned int r, unsigned int s, unsigned int d): memory_(RAM(r,s))
+{
+    time_ = 1;
+    RAM_ = r;
+    pfsize_ = s;
+    num_disks_ = d;
+    
+    PID_counter_ = 1; // PIDs start at 0
+    
+    disks_.resize(d);
+    for (unsigned int i = 0; i < d; i++) {
+        disks_[i] = Disk(i);
+    }
+}
+
+
 void OS_Sim::run() {
     string input;
     
@@ -39,98 +55,16 @@ void OS_Sim::run() {
         }
         // !!!check if d operations are safe!!!
         else if (input == "d") {
-            // read number
-            int number;
-            cin >> number;
-            cin.clear();
-            // read filename
-            string filename;
-            cin >> filename;
-            cin.clear();
-            // read from diski
-            if (number >= 0) {
-                if ((unsigned)number < num_disks_ && !CPU_.empty()) {
-                    //cout << CPU_.getProcess()->getPID() << endl;
-                    disks_[number].request(CPU_.getProcess(), filename);
-                    CPU_.stop();
-                    if (!queue_.empty()) {
-                        Process* next = queue_.pop();
-                        next->setTimestamp(getTime());//
-                        CPU_.execute(next);
-                    }
-                }
-            }
+            requestDisk();
         }
         else if (input == "D") {
-            // read in nnumber
-            int number;
-            cin >> number;
-            cin.clear();
-            // finish reading from disk
-            if (number >= 0) {
-
-                if ((unsigned)number < num_disks_) {
-                    Process* p = disks_[number].finish();
-                    if (p != NULL) {
-                        p->resetQuantum();
-                        if (CPU_.empty()) {
-                            CPU_.execute(p);
-                        } else {
-                            // behavior here??????
-                            queue_.insert(p);
-                            queue_.preempt(CPU_.stop());
-                            CPU_.execute(queue_.pop());
-                        }
-                    }
-
-                }
-            }
+            returnDisk();
         }
         else if (input == "m") {
-            // memory operation
-            // put in one function
-            int address;
-            cin >> address;
-            if (!CPU_.empty()) {
-                int page_number = address/get_pfsize();
-                Process* p = CPU_.getProcess();
-                if (!p->AddressExists(page_number) ||
-                    (!memory_.access(p->getFrame(page_number), p->getPID(), page_number, getTime()))) {
-                    int f = memory_.request(p->getPID(), address, getTime());
-                    p->setAddress(page_number, f);
-                } // update timestamp
-            }
+            accessMemory();
         }
         else if (input == "S") {
-            char input;
-            cin >> input;
-            cin.clear();
-            // r
-            if(input == 'r') {
-                cout << endl << "**************" << endl << "CPU: ";
-                if (CPU_.empty()) cout << "<empty>" << endl << endl;
-                //cout << endl;
-                else {
-                    //cout << CPU_.getProcess()->getPID() << endl;
-                    cout << endl;
-                    CPU_.getProcess()->display();
-                }
-                cout << endl << "**************" << endl;
-                queue_.print(); 
-            }
-            // i
-            else if (input == 'i') {
-                for (auto it = disks_.begin(); it != disks_.end(); it++) {
-                    (*it).display(); 
-                }
-            }
-            // m
-            else if (input == 'm') {
-                memory_.print();
-            }
-            else {
-                cout << "Invalid Input" << endl;
-            }
+            snapshot();
         }
         else if (input == "info") {
             cout << get_RAM() << endl;
@@ -216,5 +150,107 @@ void OS_Sim::terminate() {
     delete p;
 }
 
+void OS_Sim::snapshot() {
+    char input;
+    cin >> input;
+    cin.clear();
+    // r
+    if(input == 'r') {
+        cout << endl << "**************" << endl << "CPU" << endl << "**************" << endl;
+        if (CPU_.empty()) cout << "<empty>" << endl << endl;
+        //cout << endl;
+        else {
+            //cout << CPU_.getProcess()->getPID() << endl;
+            //cout << endl;
+            CPU_.getProcess()->display();
+        }
+        cout << endl << "**************" << endl << endl << endl << "**************" << endl ;
+        cout << "Queue" << endl << "**************" << endl << endl;
+        queue_.print();
+        cout << endl << "**************";
+    }
+    // i
+    else if (input == 'i') {
+        for (auto it = disks_.begin(); it != disks_.end(); it++) {
+            (*it).display();
+        }
+    }
+    // m
+    else if (input == 'm') {
+        memory_.print();
+    }
+    else {
+        cout << "Invalid Input" << endl;
+    }
+}
+
+void OS_Sim::accessMemory() {
+    // memory operation
+    // put in one function
+    int address;
+    cin >> address;
+    if (!CPU_.empty()) {
+        int page_number = address/get_pfsize();
+        Process* p = CPU_.getProcess();
+        if (!p->AddressExists(page_number) ||
+            (!memory_.access(p->getFrame(page_number), p->getPID(), page_number, getTime()))) {
+            int f = memory_.request(p->getPID(), address, getTime());
+            p->setAddress(page_number, f);
+        } // update timestamp
+    }
+
+}
+
+void OS_Sim::requestDisk() {
+    // read number
+    int number;
+    cin >> number;
+    cin.clear();
+    // read filename
+    string filename;
+    cin >> filename;
+    cin.clear();
+    // read from diski
+    if (number >= 0) {
+        if ((unsigned)number < num_disks_ && !CPU_.empty()) {
+            //cout << CPU_.getProcess()->getPID() << endl;
+            disks_[number].request(CPU_.getProcess(), filename);
+            CPU_.stop();
+            if (!queue_.empty()) {
+                Process* next = queue_.pop();
+                next->setTimestamp(getTime());//
+                CPU_.execute(next);
+            }
+        }
+    }
+
+}
+
+void OS_Sim::returnDisk() {
+    // read in nnumber
+    int number;
+    cin >> number;
+    cin.clear();
+    // finish reading from disk
+    if (number >= 0) {
+        
+        if ((unsigned)number < num_disks_) {
+            Process* p = disks_[number].finish();
+            if (p != NULL) {
+                p->resetQuantum();
+                if (CPU_.empty()) {
+                    CPU_.execute(p);
+                } else {
+                    // behavior here??????
+                    queue_.insert(p);
+                    queue_.preempt(CPU_.stop());
+                    CPU_.execute(queue_.pop());
+                }
+            }
+            
+        }
+    }
+
+}
 
 #endif // OS_SIM_CPP

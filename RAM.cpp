@@ -43,14 +43,14 @@ unsigned int RAM::request(/*unsigned*/ int PID, /*unsigned*/ int address, /*unsi
     // cout << "request address :";
     //cache.display();
     unsigned int page_number = address / pfsize_;
-    int lru = cache.peek();
+    int lru = cache.pop();//cache.peek();
     // cout << lru << endl;
     Frame&& f = move(frames_[lru]);
     f.page_number_ = page_number;
     f.PID_ = PID;
     f.timestamp_ = timestamp;
     f.empty_ = false; 
-    cache.refer(lru);
+    //cache.refer(lru);
     return lru; 
     
 }

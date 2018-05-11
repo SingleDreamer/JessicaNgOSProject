@@ -73,14 +73,18 @@ struct Disk {
     void display() {
         cout << "*********" << endl;
         cout << "*********" << endl;
-        cout << "Disk " << number_ << endl;
-        if (process_ != NULL) cout << process_->getPID() << " " << filename_ << endl;
-        cout << "*********" << endl << "I/O queue" << endl;
-        for (auto it = IOQueue.begin(); it != IOQueue.end(); it++) {
-            cout << "\t^" << endl; 
-            cout << it->first->getPID() << " " << it->second << endl;
+        cout << "Disk " << number_ << ": "<< endl;
+        if (process_ != NULL) {
+            cout << "\tPID: \t" << process_->getPID() << endl;
+            cout << "\tfile:\t " << filename_ << endl;
         }
-        cout << "*********" << endl;
+        cout << "*********" << endl;// << "I/O queue" << endl;
+        for (auto it = IOQueue.begin(); it != IOQueue.end(); it++) {
+            //cout << "\t^" << endl;
+            cout << "<- ";
+            cout << it->first->getPID() << " (" << it->second << ") ";
+        }
+        cout << endl << "*********" << endl;
         cout << "*********" << endl;
         cout << endl << endl;
     }
@@ -90,20 +94,7 @@ struct Disk {
 class OS_Sim {
     
 public:
-    OS_Sim(unsigned int r, unsigned int s, unsigned int d): memory_(RAM(r,s))
-    {
-        time_ = 1;
-        RAM_ = r;
-        pfsize_ = s;
-        num_disks_ = d;
-        
-        PID_counter_ = 1; // PIDs start at 0
-        
-        disks_.resize(d);
-        for (unsigned int i = 0; i < d; i++) {
-            disks_[i] = Disk(i);
-        }
-    }
+    OS_Sim(unsigned int r, unsigned int s, unsigned int d);
     
     unsigned int getNewPID() { return PID_counter_++; }
     unsigned int getTime() { return time_; }
@@ -116,6 +107,10 @@ public:
     void passQuantum();
     void terminate();    
     void createProcess();
+    void snapshot();
+    void accessMemory();
+    void requestDisk();
+    void returnDisk(); 
     
     void run();
     

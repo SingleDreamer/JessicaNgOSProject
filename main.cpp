@@ -20,31 +20,42 @@ int main() {
     
     cout << "How much RAM memory is there on the simulated computer?" << endl;
     cin >> RAM;
-    while (cin.fail()) {
+    while (!cin || RAM > 4000000000) {
         //Not an int.
-        cout << "not an int" << endl;
+        //cout << "not an int" << endl;
         cout << "How much RAM memory is there on the simulated computer?" << endl;
         cin.clear();
+        cin.ignore();
         cin >> RAM;
     }
-    while (RAM > 4000000000) {
-        cout << "Too big" << endl;
-        cout << "How much RAM memory is there on the simulated computer?" << endl;
-        cin.clear();
-        cin >> RAM;
-    }
+    
+//    while (RAM > 4000000000) {
+//        cout << "Too big" << endl;
+//        cout << "How much RAM memory is there on the simulated computer?" << endl;
+//        cin.clear();
+//        cin >> RAM;
+//    }
+
     cin.clear();
     cout << "What is the size of a page/frame?" << endl;
     cin >> pfsize;
-    while (pfsize > RAM) {
-        cout << "Too big" << endl;
+    while (!cin || pfsize > RAM) {
+        //cout << "Too big" << endl;
         cout << "What is the size of a page/frame?" << endl;
         cin.clear();
+        cin.ignore();
         cin >> pfsize;
     }
     cin.clear();
     cout << "How many hard disks does the simulated computer have?" << endl;
     cin >> num_disks;
+    while (!cin) {
+        //cout << "Too big" << endl;
+        cout << "How many hard disks does the simulated computer have?" << endl;
+        cin.clear();
+        cin.ignore();
+        cin >> num_disks;
+    }
     cin.clear();
     
     OS_Sim sim = OS_Sim(RAM, pfsize, num_disks);
