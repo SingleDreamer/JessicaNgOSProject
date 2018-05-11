@@ -100,7 +100,7 @@ public:
         PID_counter_ = 1; // PIDs start at 0
         
         disks_.resize(d);
-        for (int i = 0; i < d; i++) {
+        for (unsigned int i = 0; i < d; i++) {
             disks_[i] = Disk(i);
         }
     }

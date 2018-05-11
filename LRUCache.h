@@ -25,7 +25,7 @@ private:
     
     // store references of key in cache
     unordered_map<int, list<int>::iterator> ma;
-    int csize; //maximum capacity of cache
+    unsigned int csize; //maximum capacity of cache
     
     
     

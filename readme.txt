@@ -31,6 +31,7 @@ timestamp only with m commands
 !!! update timestamp when access
 access counts as used?
 !!!regex
+!!! should use empty memory first before replacing 
 
 returns to end of original queue without degradong 
 

@@ -69,7 +69,7 @@ bool RAM::access(unsigned int frame, unsigned int PID, unsigned int page_number,
     return frames_[frame].PID_ == PID && frames_[frame].page_number_ == page_number;
 }
 
-void RAM::remove(unsigned int PID) {
+void RAM::remove(/*unsigned*/ int PID) {
     for (unsigned int i = 0; i < num_frames_; i++) {
         if (frames_[i].PID_ == PID) {
             frames_[i].clear();
