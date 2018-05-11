@@ -47,15 +47,17 @@ void OS_Sim::run() {
             string filename;
             cin >> filename;
             cin.clear();
-            // read from disk
-            if (number < num_disks_ && !CPU_.empty()) {
-                //cout << CPU_.getProcess()->getPID() << endl;
-                disks_[number].request(CPU_.getProcess(), filename);
-                CPU_.stop();
-                if (!queue_.empty()) {
-                    Process* next = queue_.pop();
-                    next->setTimestamp(getTime());//
-                    CPU_.execute(next);
+            // read from diski
+            if (number >= 0) {
+                if ((unsigned)number < num_disks_ && !CPU_.empty()) {
+                    //cout << CPU_.getProcess()->getPID() << endl;
+                    disks_[number].request(CPU_.getProcess(), filename);
+                    CPU_.stop();
+                    if (!queue_.empty()) {
+                        Process* next = queue_.pop();
+                        next->setTimestamp(getTime());//
+                        CPU_.execute(next);
+                    }
                 }
             }
         }
