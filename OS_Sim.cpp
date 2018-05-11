@@ -67,20 +67,23 @@ void OS_Sim::run() {
             cin >> number;
             cin.clear();
             // finish reading from disk
-            if (number < num_disks_) {
-                Process* p = disks_[number].finish();
-                if (p != NULL) {
-                    p->resetQuantum();
-                    if (CPU_.empty()) {
-                        CPU_.execute(p);
-                    } else {
-                        // behavior here??????
-                        queue_.insert(p);
-                        queue_.preempt(CPU_.stop());
-                        CPU_.execute(queue_.pop());
-                    }
-                }
+            if (number >= 0) {
 
+                if ((unsigned)number < num_disks_) {
+                    Process* p = disks_[number].finish();
+                    if (p != NULL) {
+                        p->resetQuantum();
+                        if (CPU_.empty()) {
+                            CPU_.execute(p);
+                        } else {
+                            // behavior here??????
+                            queue_.insert(p);
+                            queue_.preempt(CPU_.stop());
+                            CPU_.execute(queue_.pop());
+                        }
+                    }
+
+                }
             }
         }
         else if (input == "m") {
