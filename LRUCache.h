@@ -35,7 +35,8 @@ public:
 
     LRUCache(int);
     void refer(int);
-    //void display();
+    void reset(int); 
+    void display();
     int peek();
     int pop();
     

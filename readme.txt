@@ -50,7 +50,7 @@ How many hard disks does the simulated computer have? The enumeration of the har
 After these questions are answered, the simulation begins. You program constantly listens for the user inputs. 
 
 !!!!You should NOT ask for a confirmation to enter another input. !!!! what does this mean?????
-
+!!! let know if ignore input???
 
 The user inputs signal some system events. Your program simulates the corresponding system behavior.
 

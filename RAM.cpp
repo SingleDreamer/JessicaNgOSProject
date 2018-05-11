@@ -8,6 +8,8 @@
 
 #include "RAM.h"
 
+
+
 RAM::RAM(unsigned int r, unsigned int s)//: cache(LRUCache(r/s))
 {
     RAMsize_ = r;
@@ -47,6 +49,7 @@ unsigned int RAM::request(unsigned int PID, unsigned int address, unsigned int t
     f.page_number_ = page_number;
     f.PID_ = PID;
     f.timestamp_ = timestamp;
+    f.empty_ = false; 
     cache.refer(lru);
     return lru; 
     
@@ -69,7 +72,9 @@ bool RAM::access(unsigned int frame, unsigned int PID, unsigned int page_number,
 void RAM::remove(unsigned int PID) {
     for (unsigned int i = 0; i < num_frames_; i++) {
         if (frames_[i].PID_ == PID) {
-            frames_[i].clear(); 
+            frames_[i].clear();
+            cache.reset(i);
+            //cache.refer(i); // make sure that empty is least recently used?
         }
     }
 }

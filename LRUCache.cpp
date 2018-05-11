@@ -45,14 +45,37 @@ int LRUCache::pop() {
     return n; 
 }
 
+void LRUCache::reset(int x) {
+    // not present in cache
+    if (ma.find(x) == ma.end())
+    {
+        // cache is full
+        if (dq.size() == csize)
+        {
+            //delete least recently used element
+            int last = dq.back();
+            dq.pop_back();
+            ma.erase(last);
+        }
+    }
+    
+    // present in cache
+    else
+        dq.erase(ma[x]);
+    
+    // update reference
+    dq.push_back(x);
+    ma[x] = (--dq.end());
+}
+
 // display contents of cache
-/*void LRUCache::display()
+void LRUCache::display()
 {
     for (auto it = dq.begin(); it != dq.end(); it++)
         cout << (*it) << " ";
     
     cout << endl;
-}*/
+}
 
 
 // This code is contributed by Satish Srinivas

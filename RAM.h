@@ -19,16 +19,20 @@ struct Frame {
     frame_number_(-1),
     page_number_(-1),
     PID_(-1),
-    timestamp_(-1) {}
+    timestamp_(-1),
+    empty_(true) {}
     /*unsigned*/ int frame_number_;
     /*unsigned*/ int page_number_;
     /*unsigned*/ int PID_;
     /*unsigned*/ int timestamp_;
+    bool empty_;
     void clear() {
         page_number_ = -1;
         PID_ = -1;
         timestamp_ = -1;
+        empty_ = true; 
     }
+    bool empty() { return empty_; }
     friend ostream& operator<<(ostream& os, const Frame& f) {
         if (f.frame_number_ != -1) os << f.frame_number_ << "\t";
         if (f.page_number_ != -1) os << f.page_number_ << "\t";

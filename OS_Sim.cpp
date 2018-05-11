@@ -157,10 +157,8 @@ void OS_Sim::createProcess() {
         }
     }
     
-    
     int f = memory_.request(p->getPID(), 0, getTime());
     p->setAddress(0, f);
-    
     /*
      cout << CPU_.empty() << endl;
      Process* p = CPU_.terminate();
