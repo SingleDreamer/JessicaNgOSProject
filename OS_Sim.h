@@ -76,7 +76,7 @@ struct Disk {
         cout << "Disk " << number_ << ": "<< endl;
         if (process_ != NULL) {
             cout << "\tPID: \t" << process_->getPID() << endl;
-            cout << "\tfile:\t " << filename_ << endl;
+            cout << "\tfile:\t" << filename_ << endl;
         }
         cout << "*********" << endl;// << "I/O queue" << endl;
         for (auto it = IOQueue.begin(); it != IOQueue.end(); it++) {
@@ -103,7 +103,6 @@ public:
     unsigned int get_pfsize() { return pfsize_; }
     unsigned int get_num_disks() { return num_disks_; }
     
-    unsigned int addTime() { return ++time_ ; }
     void passQuantum();
     void terminate();    
     void createProcess();
@@ -115,6 +114,10 @@ public:
     void run();
     
 private:
+    
+    unsigned int addTime() { return ++time_ ; }
+    
+    
     unsigned int time_;
     unsigned int RAM_;
     unsigned int pfsize_; //page and frame size
@@ -124,8 +127,9 @@ private:
     CPU CPU_;
     ReadyQueue queue_;
     RAM memory_;
-    
     vector<Disk> disks_;
+    //vector<Process*> process_table_;
+    
     // multilevel queue
     /*list<Process*> level0_; // RR with time quantum 1
      list<Process*> level1_; // RR with time quantum 2

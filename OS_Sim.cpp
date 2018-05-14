@@ -161,13 +161,13 @@ void OS_Sim::snapshot() {
         //cout << endl;
         else {
             //cout << CPU_.getProcess()->getPID() << endl;
-            //cout << endl;
+            cout << endl;
             CPU_.getProcess()->display();
         }
         cout << endl << "**************" << endl << endl << endl << "**************" << endl ;
         cout << "Queue" << endl << "**************" << endl << endl;
         queue_.print();
-        cout << endl << "**************";
+        cout << endl << "**************" << endl;
     }
     // i
     else if (input == 'i') {

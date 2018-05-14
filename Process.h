@@ -49,7 +49,7 @@ public:
         return priority_;
     }
     
-    void display() { std::cout << "PID: " << getPID() << std::endl << "priority: " << getPriority() << std::endl << "current quantum: " << getQuantumPassed() << std::endl; }
+    void display() { std::cout << "PID: " << getPID() << std::endl << "priority level: " << getPriority() << std::endl << "current quantum: " << getQuantumPassed() << std::endl; }
     
 private:
     
