@@ -150,7 +150,7 @@ void OS_Sim::terminate() {
         
         delete p;
     } else {
-        cout << "There is currently not process using the CPU" << endl;
+        cout << "There is currently no process using the CPU" << endl;
     }
 }
 
@@ -202,7 +202,7 @@ void OS_Sim::accessMemory() {
             p->setAddress(page_number, f);
         } // update timestamp
     } else {
-        cout << "There is currently not process using the CPU" << endl;
+        cout << "There is currently no process using the CPU" << endl;
     }
 
 }
@@ -257,7 +257,7 @@ void OS_Sim::returnDisk() {
                     CPU_.execute(queue_.pop());
                 }
             } else {
-                cout << "Disk empty" << endl; 
+                cout << "Disk empty" << endl;
             }
             
         }
