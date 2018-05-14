@@ -260,6 +260,8 @@ void OS_Sim::returnDisk() {
                 cout << "Disk empty" << endl;
             }
             
+        } else {
+            cout << "Invalid Input" << endl;
         }
     }
 
