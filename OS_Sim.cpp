@@ -140,14 +140,18 @@ void OS_Sim::passQuantum() {
 }
 
 void OS_Sim::terminate() {
-    Process* p = CPU_.stop();
-    unsigned int PID = p->getPID();
-    memory_.remove(PID);
-
-    if (queue_.empty()) return;
-    CPU_.execute(queue_.pop());
-    
-    delete p;
+    if (!CPU_.empty()) {
+        Process* p = CPU_.stop();
+        unsigned int PID = p->getPID();
+        memory_.remove(PID);
+        
+        if (queue_.empty()) return;
+        CPU_.execute(queue_.pop());
+        
+        delete p;
+    } else {
+        cout << "There is currently not process using the CPU" << endl;
+    }
 }
 
 void OS_Sim::snapshot() {
@@ -197,6 +201,8 @@ void OS_Sim::accessMemory() {
             int f = memory_.request(p->getPID(), address, getTime());
             p->setAddress(page_number, f);
         } // update timestamp
+    } else {
+        cout << "There is currently not process using the CPU" << endl;
     }
 
 }
@@ -210,7 +216,7 @@ void OS_Sim::requestDisk() {
     string filename;
     cin >> filename;
     cin.clear();
-    // read from diski
+    // read from disk
     if (number >= 0) {
         if ((unsigned)number < num_disks_ && !CPU_.empty()) {
             //cout << CPU_.getProcess()->getPID() << endl;
@@ -221,7 +227,11 @@ void OS_Sim::requestDisk() {
                 next->setTimestamp(getTime());//
                 CPU_.execute(next);
             }
+        } else {
+            cout << "Invalid Input" << endl;
         }
+    } else {
+        cout << "Invalid Input" << endl;
     }
 
 }
@@ -246,6 +256,8 @@ void OS_Sim::returnDisk() {
                     queue_.preempt(CPU_.stop());
                     CPU_.execute(queue_.pop());
                 }
+            } else {
+                cout << "Disk empty" << endl; 
             }
             
         }
